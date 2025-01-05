@@ -1,110 +1,143 @@
-import './style.css'
 
-const gridContainer = document.getElementById('grid-container')
+import './style.css';
 
-let cards = []
-let firstCard, secondCard
-let lockBoard = false
-let score = 0
-
-document.querySelector('#app').innerHTML = `
- <h1>Memory card</h1>
-  <div class="grid-container"></div>
-  <p>Score: <span class="score"></span></p>
-  <div class="action">
-    <button onclick="restart">Restart</button>
-  </div>
-`
-
-
-document.querySelector('.score').textContent = score
-
-fetch('./data/cards.json')
-  .then((res) => res.json())
-  .then(data => {
-    cards = [...data, ...data]
-})
-
-function reshuffleCard (){
-    let currentIndex = cards.length,
-    randonIndex,
-    temporaryValue
-    while(currentIndex !==0){
-        randonIndex = Math.floor(Math.random() * currentIndex)
-        currentIndex -= 1
-        temporaryValue = cards[currentIndex]
-        cards[currentIndex] = cards[randonIndex]
-        cards[randonIndex] = temporaryValue
-    }
-}
-
-function generatecards(){
-    const cardElement = document.createElement('div')
-    for (let card of cards) {
-        cardElement.classList.add('cards')
-        cardElement.setAttribute('data-name', card.name)
-        cardElement.innerHTML =`
-        <div class="front">
-          <img src="${card.image}" class="front-image">
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('#app').innerHTML = `
+        <h1>Memory card</h1>
+        <div id="grid-container"></div>
+        <p>Score: <span class="score"></span></p>
+         <div class="action">
+            <button id="restart-btn">Restart</button>
         </div>
-        <div class="back"></div>
-       `
-       gridContainer.appendChild(cardElement)
-       cardElement.addEventListener('click',)
-    }      
-}
+    `;
+   
+    let cards = [
+        { name: 'card1', image: 'image/apple.png' },
+        { name: 'card2', image: 'image/banana.png' },
+        { name: 'card3', image: 'image/mellong.png' },
+        { name: 'card4', image: 'image/peper.png' },
+        { name: 'card5', image: 'image/onion.png' },
+        { name: 'card6', image: 'image/tomat.png' },
+        { name: 'card7', image: 'image/series.png' },
+        { name: 'card8', image: 'image/orange.png' },
+        { name: 'card9', image: 'image/corn.png' },
+        // Add more card objects with different names and images
+        { name: 'card1', image: 'image/apple.png' },
+        { name: 'card2', image: 'image/banana.png' },
+        { name: 'card3', image: 'image/mellong.png' },
+        { name: 'card4', image: 'image/peper.png' },
+        { name: 'card5', image: 'image/onion.png' },
+        { name: 'card6', image: 'image/tomat.png' },
+        { name: 'card7', image: 'image/series.png' },
+        { name: 'card8', image: 'image/orange.png' },
+        { name: 'card9', image: 'image/corn.png' },
+        // Duplicate cards for the matching game
+    ];
 
-function flipcard() {
-   if(lockBoard) return
-   if(this === firstCard) return
+    let firstCard, secondCard;
+    let lockBoard = false;
+    let score = 0;
+   
+    document.querySelector(".score").textContent = score;
+   
+    function reshuffleCards() {
+        let currentIndex = cards.length;
+        let randomIndex, temporaryValue;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = cards[currentIndex];
+            cards[currentIndex] = cards[randomIndex];
+            cards[randomIndex] = temporaryValue;
+        }
+    }
+   
+    function generateCards() {
+        const gridContainer = document.getElementById("grid-container");
+        gridContainer.innerHTML = '';
 
-   this.classList.add('flipped')
+        for (let card of cards) {
+            const cardElement = document.createElement("div");
+            gridContainer.appendChild(cardElement);
 
-   if(!firstCard) {
-    firstCard = this
-    return
-   }
+            cardElement.classList.add("cards");
+            cardElement.setAttribute("data-name", card.name);
+            cardElement.innerHTML = `
+                <div class="front">
+                    <img src="${card.image}" class="front-image">
+                </div>
+                <div class="back"></div>
+            `;
 
-   secondCard = this
-   score++
-   document.querySelector('.score').textContent = score
-   lockBoard = true
+            cardElement.addEventListener("click", flipCard);
+        }
+    }
+   
+    
+    function flipCard() {
+        if (lockBoard) return;
+        if (this === firstCard) return;
 
-   checkForMatch()
-}
+        this.classList.add("flipped");
 
-function checkForMatch() {
-    let isMatch = firstCard.dataset.name === secondCard.dataset.name
+        if (!firstCard) {
+            firstCard = this;
+            return;
+        }
 
-    isMatch ? disableCards() : unflipCards()
-}
+        secondCard = this;
+        lockBoard = true;
 
-function disableCards() {
-    firstCard.removeEventListener('click', flipcard)
-    secondCard.removeEventListener('click', flipcard)
+        checkForMatch();
+    }
 
-    resetBoard()
-}
+    function checkForMatch() {
+        let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+        if (isMatch) {
+            disableCards();
+            score++;  // Increment score only if cards match
+            document.querySelector(".score").textContent = score;
+        } else {
+            unflipCards();
+        }
+    }
 
-function unflipCards() {
-    setTimeout(() =>{
-        firstCard.classList.remove('flipped')
-        secondCard.classList.remove('flipped')
-        resetBoard()
-    }, 1000)
-}
+    function disableCards() {
+        firstCard.removeEventListener("click", flipCard);
+        secondCard.removeEventListener("click", flipCard);
+        resetBoard();
+    }
 
-function resetBoard() {
-    firstCard = null
-    secondCard = null
-    lockBoard = false
-}
+    function unflipCards() {
+        setTimeout(() => {
+            firstCard.classList.remove("flipped");
+            secondCard.classList.remove("flipped");
+            resetBoard();
+        }, 1000);
+    }
 
-function restart() {
-    resetBoard()
-    shuffleCards()
-    score = 0
-    document.querySelector('.score').textContent = score
-    gridContainer.innerHTML = ""
-    generatecards()
-}
+    function resetBoard() {
+        firstCard = null;
+        secondCard = null;
+        lockBoard = false;
+    }
+
+    function restart() {
+        resetBoard();
+        reshuffleCards();
+        score = 0;
+        document.querySelector(".score").textContent = score;
+        const gridContainer = document.getElementById("grid-container");
+        gridContainer.innerHTML = ""; 
+        generateCards(); 
+    }
+
+    document.querySelector('#restart-btn').addEventListener('click', restart);
+
+    generateCards(); 
+    reshuffleCards(); 
+
+});
+
+
+
