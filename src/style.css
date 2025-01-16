@@ -1,4 +1,3 @@
-
 * {
   padding: 0;
   margin: 0;
@@ -8,7 +7,6 @@
 body {
   width: 100vw;
   height: 100vh;
- 
 }
 
 h1 {
@@ -43,14 +41,14 @@ button {
   display: grid;
   justify-content: center;
   gap: 16px;
-  grid-template-columns: repeat(6, 140px);
-  grid-template-rows: repeat(2, calc(140px / 2 * 3));
+  grid-template-columns: repeat(6, 120px);
+  grid-template-rows: repeat(2, calc(120px / 2 * 2));
 }
 
 .cards {
-  width: 140px;
-  border-radius: 10px;
-  height: calc(140px / 2 * 3);
+  width: 340px;
+  border-radius: 20px;
+  height: calc(140px / 2 * 2);
   background-color: #242323;
   position: relative;
   transform-style: preserve-3d;
@@ -66,8 +64,7 @@ button {
   transform: rotateY(180deg);
 }
 
-.front
-.back {
+.front {
   backface-visibility: hidden;
   position: absolute;
   border-radius: 10px;
@@ -77,6 +74,11 @@ button {
   width: 100%;
 }
 
+#app {
+  width: 350px;
+  justify-self: center;
+}
+
 .cards .front {
   display: flex;
   justify-content: center;
@@ -84,39 +86,28 @@ button {
   transform: rotateY(180deg);
 }
 
-
-
 .cards {
   width: 100px;
-  height: 150px; 
-  perspective: 1000px; 
+  height: 100px;
+  position: relative;
+  perspective: 1000px;
   margin: 10px;
   display: inline-block;
 }
 
 .cards .front,
 .cards .back {
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
   backface-visibility: hidden;
-  transition: transform 0.5s; 
-}
-
-.cards .front {
-  transform: rotateY(180deg); 
+  transition: transform 0.5s;
 }
 
 .cards .back {
-  background-color: #f0f0f0;
+  background-color: #e66f6f;
+  border-radius: 20px;
 }
 
-
-
-.cards.flipped .back {
-  transform: rotateY(180deg); 
-}
-
-@media screen and  (width: 768px) {
-  
+@media screen and (width: 768px) {
 }
