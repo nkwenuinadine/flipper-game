@@ -1,7 +1,7 @@
 import './style.css'
 
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelector("#app").innerHTML = `
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelector('#app').innerHTML = `
         <h1>Memory card</h1>
         <div id="grid-container"></div>
         <p>Score: <span class="score"></span></p>
@@ -11,35 +11,33 @@ document.addEventListener("DOMContentLoaded", function () {
     `
 
   let cards = [
-    { name: "card1", image: "image/apple.png" },
-    { name: "card2", image: "image/banana.png" },
-    { name: "card3", image: "image/mellong.png" },
-    { name: "card4", image: "image/peper.png" },
-    { name: "card5", image: "image/onion.png" },
-    { name: "card6", image: "image/tomat.png" },
-    { name: "card7", image: "image/series.png" },
-    { name: "card8", image: "image/orange.png" },
-    { name: "card9", image: "image/corn.png" },
-    // Add more card objects with different names and images
-    { name: "card1", image: "image/apple.png" },
-    { name: "card2", image: "image/banana.png" },
-    { name: "card3", image: "image/mellong.png" },
-    { name: "card4", image: "image/peper.png" },
-    { name: "card5", image: "image/onion.png" },
-    { name: "card6", image: "image/tomat.png" },
-    { name: "card7", image: "image/series.png" },
-    { name: "card8", image: "image/orange.png" },
-    { name: "card9", image: "image/corn.png" },
-    // Duplicate cards for the matching game
+    { name: 'card1', image: 'image/apple.png' },
+    { name: 'card2', image: 'image/banana.png' },
+    { name: 'card3', image: 'image/mellong.png' },
+    { name: 'card4', image: 'image/peper.png' },
+    { name: 'card5', image: 'image/onion.png' },
+    { name: 'card6', image: 'image/tomat.png' },
+    { name: 'card7', image: 'image/series.png' },
+    { name: 'card8', image: 'image/orange.png' },
+    { name: 'card9', image: 'image/corn.png' },
+    { name: 'card1', image: 'image/apple.png' },
+    { name: 'card2', image: 'image/banana.png' },
+    { name: 'card3', image: 'image/mellong.png' },
+    { name: 'card4', image: 'image/peper.png' },
+    { name: 'card5', image: 'image/onion.png' },
+    { name: 'card6', image: 'image/tomat.png' },
+    { name: 'card7', image: 'image/series.png' },
+    { name: 'card8', image: 'image/orange.png' },
+    { name: 'card9', image: 'image/corn.png' }
   ]
 
   let firstCard, secondCard
   let lockBoard = false
   let score = 0
 
-  document.querySelector(".score").textContent = score
+  document.querySelector('.score').textContent = score
 
-  function reshuffleCards() {
+  function reshuffleCards () {
     let currentIndex = cards.length
     let randomIndex, temporaryValue
     while (currentIndex !== 0) {
@@ -51,16 +49,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function generateCards() {
-    const gridContainer = document.getElementById("grid-container")
+  function generateCards () {
+    const gridContainer = document.getElementById('grid-container')
     gridContainer.innerHTML = ''
 
     for (let card of cards) {
-      const cardElement = document.createElement("div")
+      const cardElement = document.createElement('div')
       gridContainer.appendChild(cardElement)
 
-      cardElement.classList.add("cards")
-      cardElement.setAttribute("data-name", card.name)
+      cardElement.classList.add('cards')
+      cardElement.setAttribute('data-name', card.name)
       cardElement.innerHTML = `
                 <div class="front">
                     <img src="${card.image}" class="front-image">
@@ -68,69 +66,69 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="back"></div>
             `
 
-      cardElement.addEventListener("click", flipCard)
+      cardElement.addEventListener('click', flipCard)
     }
   }
 
-  function flipCard() {
+  function flipCard () {
     if (lockBoard) return
     if (this === firstCard) return
 
-    this.classList.add("flipped")
+    this.classList.add('flipped')
 
     if (!firstCard) {
-      firstCard = this;
-      return;
+      firstCard = this
+      return
     }
 
-    secondCard = this;
-    lockBoard = true;
+    secondCard = this
+    lockBoard = true
 
-    checkForMatch();
+    checkForMatch()
   }
 
-  function checkForMatch() {
-    let isMatch = firstCard.dataset.name === secondCard.dataset.name
-    if (isMatch) {
+  function checkForMatch () {
+    let constand = firstCard.dataset.name === secondCard.dataset.name
+    if (constand) {
       disableCards()
       score++
-      document.querySelector(".score").textContent = score
+      document.querySelector('.score').textContent = score
     } else {
       unflipCards()
     }
   }
 
-  function disableCards() {
-    firstCard.removeEventListener("click", flipCard)
-    secondCard.removeEventListener("click", flipCard)
+  function disableCards () {
+    firstCard.removeEventListener('click', flipCard)
+    secondCard.removeEventListener('click', flipCard)
     resetBoard()
   }
 
-  function unflipCards() {
+  function unflipCards () {
     setTimeout(() => {
-      firstCard.classList.remove("flipped")
-      secondCard.classList.remove("flipped")
+      firstCard.classList.remove('flipped')
+      secondCard.classList.remove('flipped')
       resetBoard()
     }, 1000)
   }
 
-  function resetBoard() {
+  function resetBoard () {
     firstCard = null
     secondCard = null
     lockBoard = false
   }
 
-  function restart() {
+  function restart () {
     resetBoard()
     reshuffleCards()
     score = 0
-    document.querySelector(".score").textContent = score
-    const gridContainer = document.getElementById("grid-container")
+    document.querySelector('.score').textContent = score
+    const gridContainer = document.getElementById('rid-container')
     gridContainer.innerHTML = ''
     generateCards()
   }
 
-  document.querySelector("#restart-btn").addEventListener("click", restart)
+  document.querySelector('#restart-btn').addEventListener('click', restart)
 
   generateCards()
   reshuffleCards()
