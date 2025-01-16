@@ -1,4 +1,4 @@
-import './style.css';
+import './style.css'
 
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#app').innerHTML = `
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     `
 
-  let cards = [
+  const cards = [
     { name: 'card1', image: 'image/apple.png' },
     { name: 'card2', image: 'image/banana.png' },
     { name: 'card3', image: 'image/mellong.png' },
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     { name: 'card7', image: 'image/series.png' },
     { name: 'card8', image: 'image/orange.png' },
     { name: 'card9', image: 'image/corn.png' }
-  ].flatMap((card) => [card, { ...card }]);
+  ].flatMap((card) => [card, { ...card }])
 
   let firstCard, secondCard
   let lockBoard = false
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelector('.score').textContent = score
 
-  function reshuffleCards() {
+  function reshuffleCards () {
     let currentIndex = cards.length
     let randomIndex, temporaryValue
     while (currentIndex !== 0) {
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function generateCards() {
+  function generateCards () {
     const gridContainer = document.getElementById('grid-container')
     gridContainer.innerHTML = ''
 
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function disableCards() {
+  function disableCards () {
     firstCard.removeEventListener('click', flipCard)
     secondCard.removeEventListener('click', flipCard)
     resetBoard()
