@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const gridContainer = document.getElementById('grid-container')
       gridContainer.innerHTML = ''
 
-      for ( card of cards) {
+      for (const card of cards) {
           const cardElement = document.createElement('div')
           gridContainer.appendChild(cardElement)
 
